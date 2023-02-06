@@ -1,7 +1,15 @@
 import axios from "axios";
-import { getTokenFromLocalStorage, isHasAccessToken } from "./storage";
+import { getTokenFromLocalStorage } from "./storage";
 
-export const dataFetcher = axios.create({
+const dataFetcherNotAuth = axios.create({
+  baseURL: "http://localhost:8080/auth/",
+  headers: {
+    Accept: "application/json",
+  },
+});
+
+
+const dataFetcher = axios.create({
   baseURL: "http://localhost:8080/api/",
   headers: {
     Accept: "application/json",
@@ -24,3 +32,5 @@ dataFetcher.interceptors.response.use(
     return Promise.reject(error.message);
   }
 );
+
+export { dataFetcher, dataFetcherNotAuth };
