@@ -1,15 +1,23 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { dataFetcherNotAuth } from "../../utils/data-fetcher";
+import { setTokenFromLocalStorage } from "../../utils/storage";
 
 export interface LoginForm {
   email: string;
   password: string;
 }
 
+export interface LoginDataResponse {
+  data: string;
+  statusCode: number;
+}
+
 export interface LoginProps {}
 
 const Login: FC<LoginProps> = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,8 +26,14 @@ const Login: FC<LoginProps> = () => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      const response = await dataFetcherNotAuth.post("login", data);
-      console.log(response);
+      const response: LoginDataResponse = await dataFetcherNotAuth.post(
+        "login",
+        data
+      );
+      console.log(response.data);
+      
+      setTokenFromLocalStorage(response.data);
+      navigate("/");
     } catch (e) {
     } finally {
     }
@@ -28,7 +42,7 @@ const Login: FC<LoginProps> = () => {
   return (
     <>
       <div className="h-screen flex justify-center items-center container mx-auto">
-        <div className="rounded p-5 shadow-lg">
+        <div className="rounded p-5 shadow-xl">
           <h1 className="text-center text-3xl font-bold">CRM APP</h1>
           <div className="py-4 w-96 max-w-full">
             <form onSubmit={handleSubmit(onSubmit)}>

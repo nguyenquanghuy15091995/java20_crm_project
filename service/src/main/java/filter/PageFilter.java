@@ -12,16 +12,14 @@ public class PageFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//        HttpServletRequest req = (HttpServletRequest) servletRequest;
-//        String path = req.getRequestURI();
-//        if (path.contains("/api") || path.contains("/auth")) {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "authorization,withCredentials, content-type, xsrf-token, Cache-Control, Cookie");
+        resp.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
         filterChain.doFilter(servletRequest, servletResponse);
-//            return;
-//        }
-//        servletRequest.getRequestDispatcher("/404").forward(servletRequest, servletResponse);
     }
 
 }

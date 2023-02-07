@@ -5,9 +5,9 @@ const dataFetcherNotAuth = axios.create({
   baseURL: "http://localhost:8080/auth/",
   headers: {
     Accept: "application/json",
+    // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8;",
   },
 });
-
 
 const dataFetcher = axios.create({
   baseURL: "http://localhost:8080/api/",
@@ -17,13 +17,25 @@ const dataFetcher = axios.create({
   },
 });
 
+dataFetcherNotAuth.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    if (error.response && error.response.data) {
+      return Promise.reject(error.response.data);
+    }
+    return Promise.reject(error.message);
+  }
+)
+
 dataFetcher.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
       alert("You are not authorized or expired!");
       location.href = "/login";
     }
-    return response;
+    return response.data;
   },
   (error) => {
     if (error.response && error.response.data) {

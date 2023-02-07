@@ -1,5 +1,9 @@
 const tokenKey = "crmAccessToken";
 
+export const setTokenFromLocalStorage = (token: string) => {
+  return localStorage.setItem(tokenKey, token);
+};
+
 export const getTokenFromLocalStorage = (): string => {
   return localStorage.getItem(tokenKey) || "";
 };

@@ -1,21 +1,25 @@
 import { Routes, Route } from "react-router-dom";
 import { protectedRoutes, publicRoutes, renderRoutes } from "./routes";
+import AuthWrapper from "./routes/AuthWrapper";
+import NonAuthWrapper from "./routes/NonAuthWrapper";
+import Layout from "./features/Layout";
 
 function App() {
   return (
     <div>
       <Routes>
-        {renderRoutes("public-route", publicRoutes)}
-        {renderRoutes("protected-route", protectedRoutes)}
-        {/* <Route
-            // element={
-            //   // <Auth.AuthWrapper>
-            //   <LayoutWrapper />
-            //   // </Auth.AuthWrapper>
-            // }
-          >
-            {renderRoutes("protected-route", protectedRoutes)}
-          </Route> */}
+        <Route element={<NonAuthWrapper />}>
+          {renderRoutes("public-route", publicRoutes)}
+        </Route>
+        <Route
+          element={
+            <AuthWrapper>
+              <Layout />
+            </AuthWrapper>
+          }
+        >
+          {renderRoutes("protected-route", protectedRoutes)}
+        </Route>
       </Routes>
     </div>
   );
