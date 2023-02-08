@@ -9,9 +9,9 @@ const NonAuthWrapper: FC<NonAuthWrapperProps> = () => {
 
   if (token === "") {
     return (
-      <>
+      <div className="bg-slate-50">
         <Outlet />
-      </>
+      </div>
     );
   } else {
     return <Navigate to="/" replace />;

@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { dataFetcherNotAuth } from "../../utils/data-fetcher";
 import { setTokenFromLocalStorage } from "../../utils/storage";
 
@@ -17,6 +18,7 @@ export interface LoginDataResponse {
 export interface LoginProps {}
 
 const Login: FC<LoginProps> = () => {
+  const [loading, setLoading] = useState<boolean>();
   const navigate = useNavigate();
   const {
     register,
@@ -26,25 +28,27 @@ const Login: FC<LoginProps> = () => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
+      setLoading(true);
       const response: LoginDataResponse = await dataFetcherNotAuth.post(
         "login",
         data
       );
-      console.log(response.data);
-      
+      toast.success("Login successful!");
       setTokenFromLocalStorage(response.data);
       navigate("/");
     } catch (e) {
+      toast.error("Login failed!");
     } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <div className="h-screen flex justify-center items-center container mx-auto">
-        <div className="rounded p-5 shadow-xl">
+        <div className="rounded bg-white p-5 md:shadow-xl w-full md:w-auto">
           <h1 className="text-center text-3xl font-bold">CRM APP</h1>
-          <div className="py-4 w-96 max-w-full">
+          <div className="py-4 md:w-96 max-w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control w-full">
                 <label className="label">
@@ -61,6 +65,7 @@ const Login: FC<LoginProps> = () => {
                     },
                     required: { value: true, message: "Required!" },
                   })}
+                  disabled={loading}
                 />
                 <label className="label">
                   <span className="label-text-alt text-error">
@@ -79,6 +84,7 @@ const Login: FC<LoginProps> = () => {
                   {...register("password", {
                     required: { value: true, message: "Required!" },
                   })}
+                  disabled={loading}
                 />
                 <label className="label">
                   <span className="label-text-alt text-error">
@@ -87,7 +93,11 @@ const Login: FC<LoginProps> = () => {
                 </label>
               </div>
               <div className="pt-5">
-                <button type="submit" className="btn btn-primary w-full">
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full"
+                  disabled={loading}
+                >
                   Login
                 </button>
               </div>

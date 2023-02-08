@@ -1,5 +1,6 @@
 import { lazy, FC, ReactNode, Suspense } from "react";
 import { Route, RouteProps } from "react-router-dom";
+import LoadingPanel from "../components/LoadingPanel";
 
 const Home = lazy(() => import("../features/Home"));
 const Login = lazy(() => import("../features/Login"));
@@ -46,8 +47,10 @@ export const renderRoutes = (
             key={`${id}-${routeIdx.toString()}`}
             index={index}
             element={
-              <Suspense fallback={<>Loading</>}>
-                <Element />
+              <Suspense fallback={<LoadingPanel />}>
+                <div className="py-4 px-5">
+                  <Element />
+                </div>
               </Suspense>
             }
             {...routeProps}

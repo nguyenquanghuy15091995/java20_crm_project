@@ -3,6 +3,8 @@ import { protectedRoutes, publicRoutes, renderRoutes } from "./routes";
 import AuthWrapper from "./routes/AuthWrapper";
 import NonAuthWrapper from "./routes/NonAuthWrapper";
 import Layout from "./features/Layout";
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -21,6 +23,13 @@ function App() {
           {renderRoutes("protected-route", protectedRoutes)}
         </Route>
       </Routes>
+      <ToastContainer 
+        position="top-right"
+        autoClose={4000}
+        closeOnClick
+        pauseOnHover
+        transition={Slide}
+      />
     </div>
   );
 }
