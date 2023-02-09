@@ -28,7 +28,6 @@ public class AuthApi extends HttpServlet {
                 try {
                     BufferedReader br =
                             new BufferedReader(new InputStreamReader(req.getInputStream()));
-
                     String json = "";
                     if (br != null) {
                         json = br.readLine();
