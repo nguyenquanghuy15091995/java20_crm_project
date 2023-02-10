@@ -49,7 +49,14 @@ public class SecurityFilter extends HttpFilter {
                 /* Let's check whether the username and password is correct
                  * You may need to make a call to the DB server here in a real-world application */
                 if (accountService.checkToken(email)) {
+                    HttpServletResponse resp = (HttpServletResponse) res;
+                    resp.setHeader("Access-Control-Allow-Origin", "*");
+                    resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                    resp.setHeader("Access-Control-Allow-Headers", "authorization,withCredentials, content-type, xsrf-token, Cache-Control, Cookie");
+                    resp.addHeader("Access-Control-Expose-Headers", "xsrf-token");
+                    resp.addHeader("Access-Control-Allow-Credentials", "true");
                     chain.doFilter(req, res);
+                    return;
                 }
             }
         } catch (Exception e) {

@@ -1,7 +1,7 @@
 const HomeView = () => {
   return (
     <>
-      <div>ssss</div>
+      <div>Homepage</div>
     </>
   );
 };

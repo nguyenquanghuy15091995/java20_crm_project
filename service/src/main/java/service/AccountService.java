@@ -14,6 +14,11 @@ public class AccountService {
         return accountRepository.getAllAccounts();
     }
 
+    public AccountModel getAccountByEmail(String email) {
+        AccountRepository accountRepository = new AccountRepository();
+        return accountRepository.getAccountByEmail(email);
+    }
+
     public boolean checkToken(String email) {
         AccountRepository accountRepository = new AccountRepository();
         return accountRepository.checkToken(email);
