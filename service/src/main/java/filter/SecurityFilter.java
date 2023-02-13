@@ -27,7 +27,7 @@ public class SecurityFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         /* If there is no authorization header or if it doesn't have login credentials or a token
          * then there is no point of continuing */
-        String authorization = req.getHeader("Authorization");
+        String authorization = req.getParameter("Authorization");
         if (authorization == null || !(authorization.matches("(Basic)|(Bearer) .+"))) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;

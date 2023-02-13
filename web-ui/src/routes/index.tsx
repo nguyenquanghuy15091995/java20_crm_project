@@ -4,6 +4,9 @@ import LoadingPanel from "../components/LoadingPanel";
 
 const Home = lazy(() => import("../features/Home"));
 const Login = lazy(() => import("../features/Login"));
+const Profile = lazy(() => import("../features/Profile"));
+const Accounts = lazy(() => import("../features/Accounts"));
+const Projects = lazy(() => import("../features/Projects"));
 
 export interface RouteTypes extends Omit<RouteProps, "element" | "children"> {
   Element: FC;
@@ -18,10 +21,16 @@ export interface RouteAttributes {
 export interface RouteCollection {
   [key: string]: RouteAttributes;
   HOME: RouteAttributes;
+  PROFILE: RouteAttributes;
+  ACCOUNTS: RouteAttributes;
+  PROJECTS: RouteAttributes;
 }
 
 export const ROUTE_COLLECTION: RouteCollection = {
-  HOME: { path: "", label: "Home" },
+  HOME: { path: "", label: "Dashboard" },
+  PROFILE: { path: "profile", label: "Profile" },
+  ACCOUNTS: { path: "accounts", label: "Accounts" },
+  PROJECTS: { path: "projects", label: "Projects" },
 };
 
 export const protectedRoutes: RouteTypes[] = [
@@ -29,6 +38,18 @@ export const protectedRoutes: RouteTypes[] = [
     Element: Home,
     path: `${ROUTE_COLLECTION.HOME.path}`,
     index: true,
+  },
+  {
+    Element: Profile,
+    path: `${ROUTE_COLLECTION.PROFILE.path}`,
+  },
+  {
+    Element: Accounts,
+    path: `${ROUTE_COLLECTION.ACCOUNTS.path}`,
+  },
+  {
+    Element: Projects,
+    path: `${ROUTE_COLLECTION.PROJECTS.path}`,
   },
 ];
 

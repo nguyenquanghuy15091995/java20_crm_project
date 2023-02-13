@@ -1,4 +1,4 @@
-import {} from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 import { FC } from "react";
 import { AccountData } from "../../store/account";
@@ -15,11 +15,13 @@ const Header: FC<HeaderProps> = ({ profile }) => {
           <div className="text-center text-white">CRM</div>
         </div>
         <div className="px-4 flex gap-2">
-          <div className="avatar">
-            <div className="w-10 rounded-full">
-              <span className="text-xl">{profile?.fullName?.charAt(0)}</span>
+          <Link to="profile">
+            <div className="avatar placeholder online">
+              <div className="w-8 rounded-full bg-white cursor-pointer">
+                <span className="text-xl">{profile?.fullName?.charAt(0)}</span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </header>
     </>

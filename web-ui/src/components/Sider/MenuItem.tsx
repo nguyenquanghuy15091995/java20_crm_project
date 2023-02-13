@@ -1,12 +1,14 @@
 import { FC, useMemo } from "react";
-import { Link, LinkProps } from "react-router-dom";
+import { Link, LinkProps, useLocation } from "react-router-dom";
 import { IconType } from "react-icons";
+import {ROUTE_COLLECTION} from "../../routes";
 
 export interface MenuItemProps extends LinkProps {
   Icon?: IconType;
 }
 
 const MenuItem: FC<MenuItemProps> = ({ Icon, children, to, ...props }) => {
+  const location = useLocation();
   const isActive = useMemo<boolean>(() => {
     const path =
       location.pathname.length > 1 ? location.pathname.substring(1) : "";
@@ -16,8 +18,9 @@ const MenuItem: FC<MenuItemProps> = ({ Icon, children, to, ...props }) => {
         : to.toString();
     const arrPath = path.split("/");
     const arrComparePath = comparePath.split("/");
+    
     return arrPath[0] === arrComparePath[0];
-  }, [to]);
+  }, [to, location.pathname]);
 
   return (
     <>

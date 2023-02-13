@@ -15,6 +15,9 @@ const dataFetcher = axios.create({
     Accept: "application/json",
     Authorization: `Bearer ${getTokenFromLocalStorage()}`,
   },
+  params: {
+    Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+  },
 });
 
 dataFetcherNotAuth.interceptors.response.use(
@@ -27,7 +30,16 @@ dataFetcherNotAuth.interceptors.response.use(
     }
     return Promise.reject(error.message);
   }
-)
+);
+
+dataFetcher.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 dataFetcher.interceptors.response.use(
   (response) => {

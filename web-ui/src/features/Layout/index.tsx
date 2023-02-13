@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import HeaderWrapper from "./HeaderWrapper";
 import Sider from "../../components/Sider";
+import ViewTitle from "../../components/ViewTitle";
 
 const Layout = () => {
   return (
@@ -9,6 +10,7 @@ const Layout = () => {
         <HeaderWrapper />
         <Sider />
         <main className="h-screen pl-16 lg:pl-64 xl:pl-72 pt-14">
+          <ViewTitle />
           <div className="h-full">
             <Outlet />
           </div>

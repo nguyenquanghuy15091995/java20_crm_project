@@ -6,14 +6,14 @@ import { dataFetcher } from "../../utils/data-fetcher";
 
 const HeaderWrapper = () => {
   const profile: AccountData = useAccountStore((state) => state.profile);
+  const setProfile = useAccountStore((state) => state.setProfile);
 //   const { data } = useSWR(`accounts/once?email=${profile.email}`, dataFetcher.get);
-  const testFetch = async () => {
+  const fetchProfileData = async () => {
     const response = await dataFetcher.get(`accounts/once?email=${profile.email}`);
-    console.log(response)
+    setProfile(response.data);
   }
   useEffect(() => {
-    // console.log(data);
-    testFetch()
+    fetchProfileData()
   }, []);
   return (
     <>
