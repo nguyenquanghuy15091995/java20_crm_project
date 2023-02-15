@@ -99,6 +99,30 @@ public class AccountRepository {
         return accountModel;
     }
 
+    public AccountModel updateAccount(AccountModel accountModel) {
+        Connection connection = MysqlConfig.getConnection();
+        String query = "UPDATE tb_account" +
+                " SET " +
+                " full_name=\"" + accountModel.getFullName() + "\"," +
+                " address=\"" + accountModel.getAddress() + "\"," +
+                " phone_number=\"" + accountModel.getPhoneNumber() + "\"" +
+                " where email=\"" + accountModel.getEmail() + "\"";
+        AccountModel accountModelResult = new AccountModel();
+        try {
+            connection.prepareStatement(query).executeUpdate();
+            accountModelResult = accountModel;
+        } catch (Exception e) {
+            System.out.println("Get Account type list error: " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e2) {
+
+            }
+        }
+        return accountModelResult;
+    }
+
     public boolean checkAccount(String email, String password) {
         Connection connection = MysqlConfig.getConnection();
         String query = "select" +

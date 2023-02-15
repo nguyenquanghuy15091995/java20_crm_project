@@ -2,6 +2,7 @@ package api;
 
 import com.google.gson.Gson;
 import model.AccountModel;
+import org.json.JSONObject;
 import payload.BasicResponse;
 import service.AccountService;
 
@@ -10,7 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -50,6 +53,56 @@ public class AccountApi extends HttpServlet {
         printWriter.flush();
         printWriter.close();
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = req.getServletPath();
+        BasicResponse basicResponse = new BasicResponse();
+        BufferedReader br =
+                new BufferedReader(new InputStreamReader(req.getInputStream()));
+        String json = "";
+        try {
+            switch (url) {
+                case "/api/accounts/once":
+                    if (br != null) {
+                        json = br.readLine();
+                        JSONObject jsonObject = new JSONObject(json);
+                        String email = (String) jsonObject.get("email");
+                        String fullName = (String) jsonObject.get("fullName");
+                        String address = (String) jsonObject.get("address");
+                        String phoneNumber = (String) jsonObject.get("phoneNumber");
+
+                        AccountModel accountModel = new AccountModel();
+                        accountModel.setEmail(email);
+                        accountModel.setFullName(fullName);
+                        accountModel.setAddress(address);
+                        accountModel.setPhoneNumber(phoneNumber);
+                        basicResponse = this.updateAccount(accountModel, req, resp);
+                    }
+                    break;
+                default:
+                    basicResponse.setStatusCode(404);
+                    basicResponse.setMessage("Not found!");
+                    break;
+            }
+        } catch (Exception e) {
+            basicResponse.setStatusCode(500);
+            resp.setStatus(500);
+        }
+
+
+        Gson gson = new Gson();
+        String dataJson = gson.toJson(basicResponse);
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        PrintWriter printWriter = resp.getWriter();
+        printWriter.print(dataJson);
+        printWriter.flush();
+        printWriter.close();
+    }
+
     private BasicResponse getAllAccounts() {
         BasicResponse response = new BasicResponse();
         AccountService accountService = new AccountService();
@@ -63,7 +116,22 @@ public class AccountApi extends HttpServlet {
         BasicResponse response = new BasicResponse();
         AccountService accountService = new AccountService();
         AccountModel account = accountService.getAccountByEmail(email);
-        if(account == null || account.getEmail() == null) {
+        if (account == null || account.getEmail() == null) {
+            response.setStatusCode(404);
+            response.setMessage("Not found!");
+            resp.setStatus(404);
+        } else {
+            response.setStatusCode(200);
+            response.setData(account);
+        }
+        return response;
+    }
+
+    private BasicResponse updateAccount(AccountModel accountModel, HttpServletRequest req, HttpServletResponse resp) {
+        BasicResponse response = new BasicResponse();
+        AccountService accountService = new AccountService();
+        AccountModel account = accountService.updateAccount(accountModel);
+        if (account == null || account.getEmail() == null) {
             response.setStatusCode(404);
             response.setMessage("Not found!");
             resp.setStatus(404);

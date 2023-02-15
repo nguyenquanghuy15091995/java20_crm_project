@@ -19,6 +19,11 @@ public class AccountService {
         return accountRepository.getAccountByEmail(email);
     }
 
+    public AccountModel updateAccount(AccountModel accountModel) {
+        AccountRepository accountRepository = new AccountRepository();
+        return accountRepository.updateAccount(accountModel);
+    }
+
     public boolean checkToken(String email) {
         AccountRepository accountRepository = new AccountRepository();
         return accountRepository.checkToken(email);
