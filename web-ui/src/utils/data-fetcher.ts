@@ -1,6 +1,11 @@
 import axios from "axios";
 import { getTokenFromLocalStorage } from "./storage";
 
+export interface AxiosResponseData<T> {
+  data: T;
+  statusCode: number;
+}
+
 const dataFetcherNotAuth = axios.create({
   baseURL: "http://localhost:8080/auth/",
   headers: {

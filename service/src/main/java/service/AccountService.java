@@ -9,9 +9,9 @@ import repository.AccountTypeRepository;
 import java.util.List;
 
 public class AccountService {
-    public List<AccountModel> getAllAccounts() {
+    public List<AccountModel> getAllAccounts(int page, int limit) {
         AccountRepository accountRepository = new AccountRepository();
-        return accountRepository.getAllAccounts();
+        return accountRepository.getAllAccounts(page, limit);
     }
 
     public AccountModel getAccountByEmail(String email) {
@@ -19,9 +19,14 @@ public class AccountService {
         return accountRepository.getAccountByEmail(email);
     }
 
-    public AccountModel updateAccount(AccountModel accountModel) {
+    public AccountModel createAccount(String email, String pass, String fullName, String address, String phoneNumber, int accountTypeId) {
         AccountRepository accountRepository = new AccountRepository();
-        return accountRepository.updateAccount(accountModel);
+        return accountRepository.createAccount(email, pass, fullName, address, phoneNumber, accountTypeId);
+    }
+
+    public AccountModel updateAccount(String email, String password, String fullName, String address, String phoneNumber, int accountTypeId) {
+        AccountRepository accountRepository = new AccountRepository();
+        return accountRepository.updateAccount(email, password, fullName, address, phoneNumber, accountTypeId);
     }
 
     public boolean checkToken(String email) {

@@ -25,7 +25,7 @@ public class AccountApi extends HttpServlet {
         try {
             switch (url) {
                 case "/api/accounts":
-                    basicResponse = this.getAllAccounts();
+                    basicResponse = this.getAllAccounts(req, resp);
                     break;
                 case "/api/accounts/once":
                     String email = (String) req.getParameter("email");
@@ -68,16 +68,18 @@ public class AccountApi extends HttpServlet {
                         json = br.readLine();
                         JSONObject jsonObject = new JSONObject(json);
                         String email = (String) jsonObject.get("email");
+                        String password = jsonObject.has("password") ? (String) jsonObject.get("password") : null;
                         String fullName = (String) jsonObject.get("fullName");
                         String address = (String) jsonObject.get("address");
                         String phoneNumber = (String) jsonObject.get("phoneNumber");
+                        int accountTypeId = Integer.parseInt(jsonObject.has("password") ? (String) jsonObject.get("accountTypeId") : "-1");
 
                         AccountModel accountModel = new AccountModel();
                         accountModel.setEmail(email);
                         accountModel.setFullName(fullName);
                         accountModel.setAddress(address);
                         accountModel.setPhoneNumber(phoneNumber);
-                        basicResponse = this.updateAccount(accountModel, req, resp);
+                        basicResponse = this.updateAccount(email, password, fullName, address, phoneNumber, accountTypeId, req, resp);
                     }
                     break;
                 default:
@@ -88,6 +90,7 @@ public class AccountApi extends HttpServlet {
         } catch (Exception e) {
             basicResponse.setStatusCode(500);
             resp.setStatus(500);
+            System.err.println(e.getMessage());
         }
 
 
@@ -103,10 +106,14 @@ public class AccountApi extends HttpServlet {
         printWriter.close();
     }
 
-    private BasicResponse getAllAccounts() {
+    private BasicResponse getAllAccounts(HttpServletRequest req, HttpServletResponse resp) {
         BasicResponse response = new BasicResponse();
         AccountService accountService = new AccountService();
-        List<AccountModel> list = accountService.getAllAccounts();
+        String strPage = req.getParameter("page");
+        String strLimit = req.getParameter("limit");
+        int page = Integer.parseInt(strPage == null ? "1" : strPage);
+        int limit = Integer.parseInt(strLimit == null ? "10" : strLimit);
+        List<AccountModel> list = accountService.getAllAccounts(page, limit);
         response.setStatusCode(200);
         response.setData(list);
         return response;
@@ -127,10 +134,10 @@ public class AccountApi extends HttpServlet {
         return response;
     }
 
-    private BasicResponse updateAccount(AccountModel accountModel, HttpServletRequest req, HttpServletResponse resp) {
+    private BasicResponse updateAccount(String email, String password, String fullName, String address, String phoneNumber, int accountTypeId, HttpServletRequest req, HttpServletResponse resp) {
         BasicResponse response = new BasicResponse();
         AccountService accountService = new AccountService();
-        AccountModel account = accountService.updateAccount(accountModel);
+        AccountModel account = accountService.updateAccount(email, password, fullName, address, phoneNumber, accountTypeId);
         if (account == null || account.getEmail() == null) {
             response.setStatusCode(404);
             response.setMessage("Not found!");

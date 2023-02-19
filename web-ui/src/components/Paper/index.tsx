@@ -7,7 +7,7 @@ export interface PaperProps {
 const Paper: FC<PaperProps> = ({ children }) => {
   return (
     <>
-      <div className="bg-white shadow-md rounded">{children}</div>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">{children}</div>
     </>
   );
 };

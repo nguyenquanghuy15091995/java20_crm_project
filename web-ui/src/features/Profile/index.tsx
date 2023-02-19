@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useAccountStore, AccountData } from "../../store/account";
+import { useProfileStore, AccountData } from "../../store/account";
 import { dataFetcher } from "../../utils/data-fetcher";
 import Paper from "../../components/Paper";
 import TextFieldWrapper from "../../components/TextFieldWrapper";
 
 const Profile = () => {
-  const profile = useAccountStore(state => state.profile);
-  const setProfile = useAccountStore(state => state.setProfile);
+  const profile = useProfileStore(state => state.profile);
+  const setProfile = useProfileStore(state => state.setProfile);
   const { register, handleSubmit, setValue } = useForm<AccountData>();
   const [editable, setEditable] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

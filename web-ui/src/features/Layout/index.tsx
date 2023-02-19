@@ -9,9 +9,9 @@ const Layout = () => {
       <div className="bg-slate-50">
         <HeaderWrapper />
         <Sider />
-        <main className="h-screen pl-16 lg:pl-64 xl:pl-72 pt-14">
+        <main className="min-h-screen pl-16 lg:pl-64 xl:pl-72 pt-14">
           <ViewTitle />
-          <div className="h-full">
+          <div>
             <Outlet />
           </div>
         </main>

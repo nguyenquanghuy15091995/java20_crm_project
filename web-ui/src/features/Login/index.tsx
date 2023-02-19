@@ -1,10 +1,9 @@
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { dataFetcherNotAuth } from "../../utils/data-fetcher";
 import { setTokenToLocalStorage } from "../../utils/storage";
-import { useAccountStore } from "../../store/account";
+import { useProfileStore } from "../../store/account";
 
 export interface LoginForm {
   email: string;
@@ -16,12 +15,11 @@ export interface LoginDataResponse {
   statusCode: number;
 }
 
-export interface LoginProps {}
+export interface LoginProps { }
 
 const Login: FC<LoginProps> = () => {
   const [loading, setLoading] = useState<boolean>();
-  const navigate = useNavigate();
-  const setProfile = useAccountStore((state) => state.setProfile);
+  const setProfile = useProfileStore((state) => state.setProfile);
   const {
     register,
     handleSubmit,
@@ -36,9 +34,9 @@ const Login: FC<LoginProps> = () => {
         data
       );
       toast.success("Login successful!");
-      setTokenToLocalStorage(response.data);
+      await setTokenToLocalStorage(response.data);
       setProfile({ email: data.email });
-      navigate("/");
+      location.href = "/";
     } catch (e) {
       toast.error("Login failed!");
     } finally {

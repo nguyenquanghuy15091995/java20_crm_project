@@ -2,7 +2,7 @@ const tokenKey = "crmAccessToken";
 const profileKey = "crmProfileKey";
 
 export const setTokenToLocalStorage = (token: string) => {
-  return localStorage.setItem(tokenKey, token);
+  localStorage.setItem(tokenKey, token);
 };
 
 export const getTokenFromLocalStorage = (): string => {
